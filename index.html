@@ -1114,8 +1114,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
   document.getElementById('posSearchBtn').addEventListener('click', performPosBankSearch);
   document.getElementById('posSearchClear').addEventListener('click', ()=>{ document.getElementById('posSearchBank').value=''; refreshPos(); });
   
-document.getElementById('posSearchBtn').addEventListener('click', performPosmodeSearch);
-  document.getElementById('posSearchClear').addEventListener('click', ()=>{ document.getElementById('posSearchmode').value=''; refreshPos(); });
+document.getElementById('posSearchBtn').addEventListener('click', performposTransferForm);
+  document.getElementById('posSearchClear').addEventListener('click', ()=>{ document.getElementById('posTransferForm').value=''; refreshPos(); });
   // Loan search
   document.getElementById('loanSearchBtn').addEventListener('click', performLoanSearch);
   document.getElementById('loanSearchClear').addEventListener('click', ()=>{ document.getElementById('loanSearchInput').value=''; lastLoanSearch=null; document.getElementById('loanDownloadPerson').classList.add('hidden'); refreshLoan(); });
