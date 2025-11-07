@@ -1110,40 +1110,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
   document.getElementById('filterDate').addEventListener('change', refreshAll);
 
 
-  // POS search by bank (only applies to transfers)
+// POS search by bank (only applies to transfers)
 document.getElementById('posSearchBtn').addEventListener('click', performPosBankSearch);
-document.getElementById('posSearchClear').addEventListener('click', ()=>{ 
-    document.getElementById('posSearchBank').value = ''; 
-    refreshPos(); 
-});
+document.getElementById('posSearchClear').addEventListener('click', ()=>{ document.getElementById('posSearchBank').value=''; refreshPos(); });
 
-function performPosBankSearch() {
-    const searchValue = document.getElementById('posSearchBank').value.trim().toLowerCase();
-    
-    if (searchValue === '') {
-        alert('Please enter a search term.');
-        return;
-    }
-
-    // Ƙarin ɓangaren da kake so:
-    if (searchValue.includes('withdraw')) {
-        alert('Iya na withdraw');
-    } 
-    else if (searchValue.includes('transfer')) {
-        alert('Iya na transfer');
-    } 
-    else {
-        alert('Ba a gane irin search ɗin ba');
-    }
-
-    // Nan zaka saka abin da yake yin actual search ɗin
-    // Misali:
-    // filterPosResults(searchValue);
-}
-
+document.getElementById('posSearchBtn').addEventListener('click', performPosModeSearch);
+document.getElementById('posSearchClear').addEventListener('click', ()=>{ document.getElementById('posSearchMode').value=''; refreshPos(); });
+  
   // Loan search
   document.getElementById('loanSearchBtn').addEventListener('click', performLoanSearch);
   document.getElementById('loanSearchClear').addEventListener('click', ()=>{ document.getElementById('loanSearchInput').value=''; lastLoanSearch=null; document.getElementById('loanDownloadPerson').classList.add('hidden'); refreshLoan(); });
+
+  
 
   // downloads
   document.getElementById('posDownloadAll').addEventListener('click', ()=> exportTablePdf('pos'));
