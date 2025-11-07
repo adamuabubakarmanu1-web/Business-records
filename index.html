@@ -1109,10 +1109,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
   // date filter reload
   document.getElementById('filterDate').addEventListener('change', refreshAll);
 
+
   // POS search by bank (only applies to transfers)
   document.getElementById('posSearchBtn').addEventListener('click', performPosBankSearch);
   document.getElementById('posSearchClear').addEventListener('click', ()=>{ document.getElementById('posSearchBank').value=''; refreshPos(); });
-
+  
+document.getElementById('posSearchBtn').addEventListener('click', performPosmodeSearch);
+  document.getElementById('posSearchClear').addEventListener('click', ()=>{ document.getElementById('posSearchmode').value=''; refreshPos(); });
   // Loan search
   document.getElementById('loanSearchBtn').addEventListener('click', performLoanSearch);
   document.getElementById('loanSearchClear').addEventListener('click', ()=>{ document.getElementById('loanSearchInput').value=''; lastLoanSearch=null; document.getElementById('loanDownloadPerson').classList.add('hidden'); refreshLoan(); });
