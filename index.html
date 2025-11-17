@@ -148,27 +148,43 @@
   </div>
 
   <script>
-    // Handle form submission
-    document.getElementById("registerForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
+  async function loadNigeriaData() {
+    const stateSelect = document.getElementById('state');
+    const lgaSelect = document.getElementById('lga');
+    try {
+      const res = await fetch('./nigeria.json');  // FIXED
+      const nigeriaData = await res.json();
 
-      const formData = new FormData(this);
+      Object.keys(nigeriaData).forEach(state => {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+      });
 
-      try {
-        const response = await fetch("http://businessesrecords.xo.je/register.php", {
-          method: "POST",
-          body: formData
-        });
+      stateSelect.addEventListener('change', () => {
+        lgaSelect.innerHTML = '<option value="">Select Local Government</option>';
+        const selected = stateSelect.value;
 
-        const result = await response.text();
-        alert("Server Response: " + result);
+        if (nigeriaData[selected]) {
+          nigeriaData[selected].forEach(lga => {
+            const opt = document.createElement('option');
+            opt.value = lga;
+            opt.textContent = lga;
+            lgaSelect.appendChild(opt);
+          });
+        }
+      });
 
-      } catch (error) {
-        alert("Failed to connect to server!");
-        console.error(error);
-      }
-    });
-  </script>
+    } catch (err) {
+      console.error('Error loading nigeria.json:', err);
+      alert('Failed to load Nigeria location data!');
+    }
+  }
 
+  window.onload = () => {
+    loadNigeriaData();
+  };
+</script>
 </body>
 </html>
