@@ -9,56 +9,20 @@
   <style>
     * {margin: 0;padding: 0;box-sizing: border-box;font-family: 'Inter', sans-serif;}
 
-    :root {
-      --bright-bg: linear-gradient(135deg, #2563eb, #9333ea);
-      --bright-container: #ffffff;
-      --bright-text: #1e293b;
-      --bright-muted: #64748b;
-      --bright-accent: #2563eb;
-      --bright-border: #e2e8f0;
-      --bright-shadow: rgba(0, 0, 0, 0.1);
-
-      --dark-bg: linear-gradient(135deg, #0f172a, #1e293b);
-      --dark-container: #1f2937;
-      --dark-text: #f8fafc;
-      --dark-muted: #cbd5e1;
-      --dark-accent: #f59e0b;
-      --dark-border: #374151;
-      --dark-shadow: rgba(255, 255, 255, 0.05);
-
-      --green-bg: linear-gradient(135deg, #10b981, #065f46);
-      --green-container: #ecfdf5;
-      --green-text: #064e3b;
-      --green-muted: #047857;
-      --green-accent: #059669;
-      --green-border: #a7f3d0;
-      --green-shadow: rgba(5, 150, 105, 0.15);
-    }
-
-    body {
-      display: flex;justify-content: center;align-items: center;
-      min-height: 100vh;padding: 2rem 1.5rem;
-      transition: all 0.4s ease;
-    }
-
-    body[data-theme="bright"] {background: var(--bright-bg);color: var(--bright-text);}
-    body[data-theme="dark"] {background: var(--dark-bg);color: var(--dark-text);}
-    body[data-theme="green"] {background: var(--green-bg);color: var(--green-text);}
+    body {display: flex;justify-content: center;align-items: center;min-height: 100vh;
+      padding: 2rem 1.5rem;background: linear-gradient(135deg, #2563eb, #9333ea);
+      color: #1e293b;}
 
     .container {
-      background: var(--bright-container);
-      padding: 3rem 2.5rem;
-      border-radius: 1.5rem;
-      width: 100%;max-width: 28rem;
-      box-shadow: 0 1rem 2.5rem var(--bright-shadow);
-      position: relative;transition: all 0.3s ease;
+      background: white;padding: 3rem 2.5rem;border-radius: 1.5rem;
+      width: 100%;max-width: 28rem;box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.1);
     }
 
     .header {text-align: center;margin-bottom: 2.5rem;}
-    .logo {display: flex;align-items: center;justify-content: center;gap: 0.75rem;margin-bottom: 1rem;}
-    .logo-icon {width: 2.5rem;height: 2.5rem;border-radius: 0.75rem;display: flex;align-items: center;justify-content: center;color: white;background: var(--bright-bg);}
+    .logo {display: flex;align-items: center;justify-content: center;gap: 0.75rem;
+      margin-bottom: 1rem;}
+
     h2 {font-size: 1.75rem;font-weight: 700;margin-bottom: 0.5rem;}
-    .subtitle {color: var(--bright-muted);font-size: 1rem;}
 
     .form-grid {display: grid;gap: 1.5rem;}
     .form-group {display: flex;flex-direction: column;}
@@ -66,22 +30,22 @@
 
     input, select {
       width: 100%;padding: 0.875rem 1rem;border-radius: 0.75rem;
-      border: 1px solid var(--bright-border);
-      font-size: 1rem;transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;font-size: 1rem;
     }
 
-    button[type="submit"] {
+    button {
       width: 100%;padding: 1rem;border: none;border-radius: 0.75rem;
-      color: white;font-size: 1rem;font-weight: 600;cursor: pointer;
-      background: var(--bright-bg);transition: all 0.3s ease;
+      color: white;font-size: 1rem;font-weight: 600;
+      background: linear-gradient(135deg, #2563eb, #9333ea);
+      cursor: pointer;
     }
 
     .bottom-text {text-align: center;margin-top: 1.5rem;font-size: 0.95rem;}
-    .bottom-text a {color: var(--bright-accent);text-decoration: none;font-weight: 600;}
+    .bottom-text a {color: #2563eb;text-decoration: none;font-weight: 600;}
   </style>
 </head>
 
-<body data-theme="bright">
+<body>
 
   <div class="container">
 
@@ -94,7 +58,7 @@
       <p class="subtitle">Join thousands of businesses managing their records</p>
     </div>
 
-    <!-- ⭐ NEW: NO ACTION HERE -->
+    <!-- FORM -->
     <form id="registerForm">
       <div class="form-grid">
 
@@ -148,11 +112,13 @@
   </div>
 
   <script>
+  // --------------- LOAD NIGERIA STATES & LGAs ----------------
   async function loadNigeriaData() {
     const stateSelect = document.getElementById('state');
     const lgaSelect = document.getElementById('lga');
+
     try {
-      const res = await fetch('./nigeria.json');  // FIXED
+      const res = await fetch('./nigeria.json');
       const nigeriaData = await res.json();
 
       Object.keys(nigeriaData).forEach(state => {
@@ -164,10 +130,10 @@
 
       stateSelect.addEventListener('change', () => {
         lgaSelect.innerHTML = '<option value="">Select Local Government</option>';
-        const selected = stateSelect.value;
+        const selectedState = stateSelect.value;
 
-        if (nigeriaData[selected]) {
-          nigeriaData[selected].forEach(lga => {
+        if (nigeriaData[selectedState]) {
+          nigeriaData[selectedState].forEach(lga => {
             const opt = document.createElement('option');
             opt.value = lga;
             opt.textContent = lga;
@@ -177,14 +143,38 @@
       });
 
     } catch (err) {
-      console.error('Error loading nigeria.json:', err);
-      alert('Failed to load Nigeria location data!');
+      alert("Error loading nigeria.json");
+      console.error(err);
     }
   }
 
-  window.onload = () => {
-    loadNigeriaData();
-  };
-</script>
+  window.onload = loadNigeriaData;
+
+  // ------------------- FORM SUBMIT TO PHP ------------------
+  document.getElementById("registerForm").addEventListener("submit", async function(e) {
+    e.preventDefault(); // stop refresh
+
+    const formData = new FormData(this);
+
+    const phpURL = "https://YOUR-PHP-LINK-HERE/register.php";  
+    // example:
+    // https://baseness.infinityfreeapp.com/register.php
+
+    try {
+      const res = await fetch(phpURL, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.text();
+      alert(data);
+
+    } catch (error) {
+      alert("Failed to connect to server!");
+      console.error(error);
+    }
+  });
+  </script>
+
 </body>
 </html>
